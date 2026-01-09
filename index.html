@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E_Com | Modern Tech Store</title>
+
+<style>
+html{scroll-behavior:smooth}
+
+/* THEME */
+:root{
+  --bg:#020617;
+  --card:rgba(255,255,255,.08);
+  --text:#e5e7eb;
+  --primary:#38bdf8;
+  --accent:#22c55e;
+  --border:rgba(255,255,255,.15);
+}
+.light{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --text:#1f2937;
+  --border:#e5e7eb;
+}
+
+/* GLOBAL */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.4s;
+}
+
+/* NAVBAR */
+nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 40px;
+  backdrop-filter:blur(18px);
+  background:rgba(0,0,0,.45);
+  border-bottom:1px solid var(--border);
+}
+nav .menu a{
+  position:relative;
+  margin:0 18px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+}
+nav .menu a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:3px;
+  background:var(--primary);
+  border-radius:10px;
+  transition:.3s;
+}
+nav .menu a.active::after{width:100%}
+.toggle{
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:white;
+  padding:8px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* SECTION */
+section{
+  padding:90px 20px;
+  max-width:1200px;
+  margin:auto;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
+}
+section.show{
+  opacity:1;
+  transform:none;
+}
+h1{font-size:48px}
+h2{text-align:center;font-size:34px}
+
+/* HOME */
+#home{text-align:center}
+.badge{
+  display:inline-block;
+  padding:8px 16px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#facc15,#f97316);
+  color:#1f2937;
+  font-weight:700;
+  margin-bottom:20px;
+}
+#home button{
+  margin-top:25px;
+  padding:16px 42px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+.chips{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin:25px 0;
+}
+.chip{
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--card);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  font-size:14px;
+}
+
+/* STATS (DIKURANGI) */
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  margin-top:35px;
+  flex-wrap:wrap;
+}
+.stat{
+  padding:12px 18px;
+  border-radius:999px;
+  background:var(--card);
+  border:1px solid var(--border);
+  font-size:14px;
+  opacity:.85;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+  margin-top:45px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  padding:25px;
+  border-radius:26px;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);
+  transition:.4s;
+}
+.card:hover{
+  transform:translateY(-12px) scale(1.03);
+}
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+}
+.price{
+  color:var(--primary);
+  font-size:22px;
+  font-weight:700;
+}
+.card button{
+  margin-top:15px;
+  padding:13px;
+  width:100%;
+  border:none;
+  border-radius:999px;
+  background:var(--accent);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* CART */
+.cart{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  padding:16px 24px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+}
+.cart-box{
+  display:none;
+  position:fixed;
+  right:25px;
+  bottom:90px;
+  background:var(--card);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  width:320px;
+  padding:20px;
+  border-radius:22px;
+}
+.cart-box button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:999px;
+  background:var(--accent);
+  color:white;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="menu">
+    <a href="#home" class="active">Home</a>
+    <a href="#laptop">Laptop</a>
+    <a href="#service">Service</a>
+  </div>
+  <div class="toggle" onclick="toggleMode()">Dark / Light</div>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <span class="badge">🔥 Toko Komputer Terpercaya</span>
+  <h1>E_Com</h1>
+  <p>Laptop Berkualitas • Service Profesional • Gratis Antar Jemput</p>
+
+  <div class="chips">
+    <div class="chip">💻 Laptop Original</div>
+    <div class="chip">🛠️ Service Bergaransi</div>
+    <div class="chip">🚚 Gratis Antar Jemput</div>
+    <div class="chip">⚡ Fast Response</div>
+  </div>
+
+  <button onclick="chat()">Chat WhatsApp</button>
+
+  <div class="stats">
+    <div class="stat">⭐ Rating Baik</div>
+    <div class="stat">👥 Dipercaya Pelanggan</div>
+    <div class="stat">💻 Penjualan Aktif</div>
+  </div>
+</section>
+
+<!-- LAPTOP -->
+<section id="laptop">
+<h2>💻 Laptop</h2>
+<div class="grid">
+  <div class="card">
+    <img src="IMG_2971.jpeg">
+    <h3>ASUS VivoBook</h3>
+    <div class="price">Rp 8.500.000</div>
+    <button onclick="add('ASUS VivoBook')">Tambah Keranjang</button>
+  </div>
+  <div class="card">
+    <img src="IMG_2972.jpeg">
+    <h3>ACER Aspire</h3>
+    <div class="price">Rp 7.200.000</div>
+    <button onclick="add('ACER Aspire')">Tambah Keranjang</button>
+  </div>
+  <div class="card">
+    <img src="IMG_2973.jpeg">
+    <h3>Lenovo IdeaPad Slim 3</h3>
+    <div class="price">Rp 6.900.000</div>
+    <button onclick="add('Lenovo IdeaPad Slim 3')">Tambah Keranjang</button>
+  </div>
+</div>
+</section>
+
+<!-- SERVICE -->
+<section id="service">
+<h2>🛠️ Service Komputer</h2>
+<div class="grid">
+  <div class="card">
+    <h3>Install Windows</h3>
+    <div class="price">Rp 50.000</div>
+    <button onclick="chat()">Pesan</button>
+  </div>
+  <div class="card">
+    <h3>Service Laptop</h3>
+    <div class="price">Rp 150.000</div>
+    <button onclick="chat()">Pesan</button>
+  </div>
+  <div class="card">
+    <h3>Upgrade RAM / SSD</h3>
+    <div class="price">Mulai Rp 100.000</div>
+    <button onclick="chat()">Pesan</button>
+  </div>
+</div>
+</section>
+
+<!-- CART -->
+<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+<div class="cart-box" id="cartBox">
+<h3>Keranjang</h3>
+<ul id="list"></ul>
+<button onclick="checkout()">Checkout WhatsApp</button>
+</div>
+
+<footer>
+<p>© 2026 E_Com</p>
+<p>WhatsApp: 0877-1973-6763</p>
+</footer>
+
+<script>
+let cart=[];
+
+function add(item){
+  cart.push(item);
+  document.getElementById("count").innerText=cart.length;
+}
+function openCart(){
+  let box=document.getElementById("cartBox");
+  box.style.display=box.style.display==="block"?"none":"block";
+  let list=document.getElementById("list");
+  list.innerHTML="";
+  cart.forEach(i=>list.innerHTML+=`<li>${i}</li>`);
+}
+function checkout(){
+  let text="Halo E_Com, saya ingin pesan:%0A"+cart.join("%0A");
+  location.href="https://wa.me/6287719736763?text="+text;
+}
+function chat(){
+  location.href="https://wa.me/6287719736763";
+}
+function toggleMode(){
+  document.body.classList.toggle("light");
+}
+
+/* MENU ACTIVE + SCROLL */
+const sections=document.querySelectorAll("section");
+const navLinks=document.querySelectorAll("nav a");
+
+window.addEventListener("scroll",()=>{
+  let current="";
+  sections.forEach(sec=>{
+    const top=window.scrollY;
+    const offset=sec.offsetTop-150;
+    const height=sec.offsetHeight;
+    if(top>=offset && top<offset+height){
+      current=sec.getAttribute("id");
+      sec.classList.add("show");
+    }
+  });
+  navLinks.forEach(a=>{
+    a.classList.remove("active");
+    if(a.getAttribute("href")==="#"+current){
+      a.classList.add("active");
+    }
+  });
+});
+</script>
+
+</body>
+</html>
